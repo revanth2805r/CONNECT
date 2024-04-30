@@ -1,0 +1,366 @@
+//NOTIFICATION
+    // app.get('/potential-friends/:user_id/:college_id', async (c) => {
+    //   try {
+    //     const  user_id  = c.req.param('user_id');
+    //     const college_id = c.req.param('college_id');
+    
+    //     const query = await c.env.DB.prepare(`
+    //       SELECT DISTINCT u.*
+    //       FROM User u
+    //       WHERE u.college_id = ?
+    //       AND u.user_id <> ? 
+    //       AND (
+    //           NOT EXISTS (
+    //               SELECT 1
+    //               FROM request r1
+    //               WHERE (r1.receiver_id = ? AND r1.sender_id = u.user_id AND r1.is_status = 'approved')
+    //               OR (r1.sender_id = ? AND r1.receiver_id = u.user_id AND r1.is_status = 'approved')
+    //           )
+    //           OR NOT EXISTS (
+    //               SELECT 1
+    //               FROM "group" g
+    //               WHERE g.member = u.user_id AND g.created_by = ?
+    //           )
+    //       )
+    //       AND u.user_id NOT IN (
+    //           SELECT DISTINCT CASE 
+    //                              WHEN r1.sender_id = ? THEN r1.receiver_id 
+    //                              WHEN r1.receiver_id = ? THEN r1.sender_id 
+    //                              WHEN r2.sender_id = ? THEN r2.receiver_id 
+    //                              WHEN r2.receiver_id = ? THEN r2.sender_id 
+    //                              ELSE NULL 
+    //                            END as friend_id 
+    //           FROM request r1 
+    //           JOIN request r2 ON r1.sender_id = r2.receiver_id AND r1.receiver_id = r2.sender_id 
+    //           WHERE (r1.sender_id = ? OR r1.receiver_id = ? OR r2.sender_id = ? OR r2.receiver_id = ?) 
+    //           AND (r1.is_status = 'approved' AND r2.is_status = 'approved')
+    //       )
+    //     `).bind(college_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id).all();
+    
+    //      return c.json({ potential_friends: query });
+    //   } catch (error:any) {
+    //     console.error("Error fetching potential friends:", error);
+       
+    //   }
+    // });
+    
+    // app.get('/addfriend/:user_id/:college_id', async (c) => {
+    //   try {
+    //     const user_id = c.req.param('user_id');
+    //     const college_id = c.req.param('college_id');
+    //     const query = await c.env.DB.prepare(`
+    //       SELECT DISTINCT u.*
+    //       FROM User u
+    //       WHERE u.college_id = ?
+    //       AND (
+    //           NOT EXISTS (
+    //               SELECT 1
+    //               FROM request r1
+    //               WHERE r1.receiver_id = ? AND r1.sender_id = u.user_id AND r1.is_status = 'approved'
+    //           )
+    //           OR NOT EXISTS (
+    //               SELECT 1
+    //               FROM request r2
+    //               WHERE r2.sender_id = ? AND r2.receiver_id = u.user_id AND r2.is_status = 'approved'
+    //           )
+    //           OR u.user_id = ?
+    //       )
+    //       AND u.user_id NOT IN (
+    //           SELECT member
+    //           FROM "group"
+    //           WHERE created_by = ?
+    //       )
+    //       AND u.user_id NOT IN (
+    //           SELECT DISTINCT CASE 
+    //                              WHEN r1.sender_id = ? THEN r1.receiver_id 
+    //                              WHEN r1.receiver_id = ? THEN r1.sender_id 
+    //                              WHEN r2.sender_id = ? THEN r2.receiver_id 
+    //                              WHEN r2.receiver_id = ? THEN r2.sender_id 
+    //                              ELSE NULL 
+    //                            END as friend_id 
+    //           FROM request r1 
+    //           JOIN request r2 ON r1.sender_id = r2.receiver_id AND r1.receiver_id = r2.sender_id 
+    //           WHERE (r1.sender_id = ? OR r1.receiver_id = ? OR r2.sender_id = ? OR r2.receiver_id = ?) 
+    //           AND (r1.is_status = 'approved' AND r2.is_status = 'approved')
+    //       )
+    //     `).bind(college_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id, user_id,user_id).all();
+    
+    //     return c.json({ query });
+    //   } catch (error:any) {
+    //     console.log(error);
+    //     return c.text(error.message);
+    //   }
+    // });
+    //REQUEST API REQUEST
+  //   app.get('/addfriend1/:user_id/:college_id', async (c) => {
+  //     try {
+  //         const logged_in_user_id = c.req.param('user_id');
+  //         const college_id = c.req.param('college_id');
+  //         const query = await c.env.DB.prepare(`
+  //           SELECT DISTINCT u.*
+  //           FROM User u
+  //           WHERE u.college_id = ?
+  //           AND u.user_id != ?
+  //           AND (
+  //               NOT EXISTS (
+  //                   SELECT 1
+  //                   FROM request r1
+  //                   WHERE r1.receiver_id = ? AND r1.sender_id = u.user_id
+  //               )
+  //               OR NOT EXISTS (
+  //                   SELECT 1
+  //                   FROM request r2
+  //                   WHERE r2.sender_id = ? AND r2.receiver_id = u.user_id
+  //               )
+  //               OR u.user_id = ?
+  //           )
+  //         `).bind(college_id, logged_in_user_id, logged_in_user_id, logged_in_user_id, logged_in_user_id).all();
+      
+  //         return c.json({ query });
+  //     } catch (error:any) {
+  //         console.log(error);
+  //         return c.text(error.message);
+  //     }
+  // });
+  
+
+  //COMMENTED THIS CODE IS FOR NOT CORRECTLY EXECUTED BUT NO ERROR COMMENTED BY BACKEND DEVELOPERS
+
+
+    // app.get('/addfriend/:user_id/:college_id', async (c) => {
+    //   try {
+    //     const user_id = c.req.param('user_id');
+    //     const college_id = c.req.param('college_id'); // Assuming you're extracting college_id from the request
+    
+    //     // Prepare the SQL query to retrieve user details based on request conditions
+    //     const query = await c.env.DB.prepare(`
+    //       SELECT DISTINCT u.*
+    //       FROM User u
+    //       WHERE u.college_id = ?
+    //       AND NOT EXISTS (
+    //           SELECT 1
+    //           FROM request r1
+    //           WHERE r1.receiver_id = ? AND r1.sender_id = u.user_id
+    //       )
+    //       OR NOT EXISTS (
+    //           SELECT 1
+    //           FROM request r2
+    //           WHERE r2.sender_id = ? AND r2.receiver_id = u.user_id
+    //       )
+    //       OR u.user_id = ?
+    //     `).bind(college_id, user_id, user_id, user_id).all();
+    
+    //     return c.json({ query });
+    //   } catch (error:any) {
+    //     console.log(error);
+    //     return c.text(error.message);
+    //   }
+    // });
+
+
+    //   app.get('/getGroupsForCollege/:college_id', async (c) => {
+//     const  college_id  = c.req.param('college_id');
+  
+//     try {
+//       const result = await c.env.DB.prepare(`
+//         SELECT *
+//         FROM "group"
+//         WHERE created_by IN (
+//             SELECT user_id
+//             FROM "User"
+//             WHERE college_id = ?
+//         )
+//       `).bind(college_id).all();
+      
+
+//     return c.json(result);
+
+//       // if (result.length > 0) {
+//       //   res.json({ success: true, groups: result });
+//       // } else {
+//       //   res.json({ success: false, message: "No groups found for the provided college ID." });
+//       // }
+//     } catch (error:any) {
+//       console.error("Error fetching data:", error.message);
+//   }});
+
+  
+  //  app.get('/getGroupsForCollege/:college_id', async (c) => {
+  //   const college_id  = c.req.param('college_id');
+  
+  //   try {
+  //     // Check if any groups matching the criteria already exist
+  //     const existingGroups = await c.env.DB.prepare(`
+  //       SELECT COUNT(*) as count
+  //       FROM "group"
+  //       WHERE created_by IN (
+  //           SELECT user_id
+  //           FROM "User"
+  //           WHERE college_id = ?
+  //       )
+  //     `).bind(college_id).all() as unknown as Record<"count",number>;
+  
+  //     if (existingGroups.count > 0) {
+  //       return c.json({ success: false, message: "A group with the same criteria already exists." });
+  //     }
+  
+  //     // If no existing groups found, continue to retrieve groups
+  //     const result = await c.env.DB.prepare(`
+  //       SELECT *
+  //       FROM "group"
+  //       WHERE created_by IN (
+  //           SELECT user_id
+  //           FROM "User"
+  //           WHERE college_id = ?
+  //       )
+  //     `).bind(college_id).all() as unknown as Array<any>;
+  
+  //     if (result.length > 0) {
+  //      return c.json({ success: true, groups: result });
+  //     } else {
+  //       return c.json({ success: false, message: "No groups found for the provided college ID." });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //    return c.json({ success: false, message: "Internal server error." });
+  //   }
+  // });
+
+
+  // app.get('/request/getall',async(c)=>{
+//   const result = await c.env.DB.prepare(SELECT * FROM request).all();
+//   return c.json(result)
+// })
+
+// app.get('/request/get/:id', async(c)=>{
+//   const Id = await c.req.param('id')
+//   const result = await c.env.DB.prepare(SELECT * FROM request WHERE request_id =?).bind(Id).all()
+//   return c.json(result)
+// })
+// app.put('update/college/:college_id',async(c)=>{
+//   const id=c.req.param('college_id');
+//   const{success}= await c.env.DB.prepare(`UPDATE college SET college_place="coimbatore" WHERE college_id=?`).bind(id).run();
+//   if(success) {
+//     return c.text('updated successfully');
+//   }
+//   else{
+//     return c.text('update failed');
+//   }
+// })
+
+
+// app.put('/request/:id', async (c) =>{
+//    const Id = await c.req.param('id')
+//    const {request_id,sender_id,receive_id,is_status,created_at,updated_at} = await c.req.json()
+//    const {success} = await c.env.DB.prepare(UPDATE request SET is_status =? WHERE request_id =?).bind(request_id,sender_id,receive_id,is_status,created_at,updated_at,Id).run()
+//    if(success){
+//      return c.text("Request updated successfully")
+//    }
+//    else{
+//      return c.text("Something went wrong")
+//    }
+// })
+
+
+// app.delete('/request/:id', async (c) =>{
+//   const Id = await c.req.param('id')
+//   const {success} = await c.env.DB.prepare(DELETE FROM request WHERE request_id =?).bind(Id).run()
+//   if(success){
+//     return c.text("Request deleted successfully")
+//   }
+//   else{
+//     return c.text("Something went wrong")
+//   }
+// })
+//creating the User by Id
+//creating a User Api with the PostALL,Update by id,Delete by id
+// app.post('/login', async (c) => {
+  //   const {user_id, password } = await c.req.json();
+  //   const {success} = await c.env.DB.prepare(`INSERT INTO login(user_id,password) VALUES(?,?)`).bind(user_id,password).run();
+  //   if(success){
+  //     return c.text("Login successful")
+  //   }
+  //    else {
+  //     return c.text("Invalid username or password");
+  //   }
+  // });
+  //created crud api for post table
+//   app.put('/college/post/:id',async (c) =>{
+//     const Id =  c.req.param('id');
+
+//     const {college_id,college_name,college_place,created_date} = await c.req.json();
+
+//     const{success} = await c.env.DB.prepare(`UPDATE college SET college_name =?, college_place =?, created_date =? WHERE college_id =?`).bind(college_name,college_place,created_date,college_id).run();
+
+//     if(success){
+//       return c.text("College updated successfully")
+//     }
+//     else{
+//       return c.text("Something went wrong")
+//     }
+//   }
+// )
+
+// app.put('/chat/update/:user1/:user2/:message', async (c) => {
+//   const user1 = c.req.param('user1');
+//   const user2 = c.req.param('user2');
+//   const newMessage = c.req.param('message');
+  
+//   try {
+//       // Fetch the existing message from the database
+//       const existingMessageResult = await c.env.DB.prepare(`SELECT message FROM chat WHERE user1 = ? AND user2 = ?`).bind(user1, user2).all();
+
+//       if (!existingMessageResult) {
+//           return c.text("No existing message found for the given users.");
+//       }
+
+//       const existingMessage = existingMessageResult?.message);
+
+//       // Append the new message to the existing message array
+//       existingMessage.push(newMessage);
+
+//       const updatedMessage = JSON.stringify(existingMessage);
+
+//       // Update the message in the database
+//       const  changes  = await c.env.DB.prepare(`UPDATE chat SET message = ? WHERE user1 = ? AND user2 = ?`)
+//           .bind(updatedMessage, user1, user2).run();
+
+//      return c.json(changes);
+//   } catch (error: any) {
+//       return c.json(error.message);
+//   }
+// });
+  //SIGNUP REQUEST
+  // app.post('/signup', async (c) => {
+  //   try {
+  //     const { user_id, user_name, password,college_id,role,year_of_student } = await c.req.json();
+  
+  //     // Check if user_id or user_name already exists in the database
+  //     const success = await c.env.DB.prepare('SELECT * FROM signup WHERE user_id = ? AND user_name = ?').bind(user_id, user_name).all() as unknown as Array<any>;
+  
+  //     if (success.length > 0) {
+  //       return c.text("User already exists");
+  //     } else {
+  //       // Insert the new user into the database
+  //       const { success: insertSuccess } = await c.env.DB.prepare('INSERT INTO signup(user_id, user_name, password) VALUES(?,?,?)').bind(user_id, user_name, password).run();
+  //       await c.env.DB.prepare('INSERT INTO User(user_id, user_name,college_id,role,year_of_student) Values(?,?,?,?,?)').bind(user_id, user_name,college_id,role,year_of_student).run();
+  
+  //       if (insertSuccess) {
+  //        return c.json({"valid": true});
+  //       } else {
+  //         return c.json({"valid": false});
+  //       }
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     return c.text("Please Enter Valid Credentials");
+  //   }
+  // });
+
+   //   app.post('/group_members/:group_id/:user_id',async(c)=>{
+  //     const duplicate_group_id = c.req.param('group_id');
+  //     const member = c.req.param('user_id');
+
+  //     await c.env.DB.prepare(`INSERT into group_members (duplicate_group_id,member) values(?,?)`).bind(duplicate_group_id,member).run();
+  //     await c.env.DB.prepare(`INSERT into group (group_id,member) values(?,?)`).bind(duplicate_group_id,member).run();
+  // })

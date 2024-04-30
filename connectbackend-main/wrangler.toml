@@ -1,0 +1,18 @@
+name = "connectapi"
+compatibility_date = "2023-12-01"
+
+# [vars]
+# MY_VARIABLE = "production_value"
+
+[[kv_namespaces]]
+binding = "CONNECTIMG"
+id = "d8e2bc7f01434f1db5667cbbff34c22e"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "connectdb"
+database_id = "7f078c1f-ca11-41ac-958e-e108ee45edc9"
